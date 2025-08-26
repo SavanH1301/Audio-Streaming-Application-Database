@@ -1,0 +1,369 @@
+1) List all playlists with creation date after a '2024-01-01':
+SQL Statement:: 
+SELECT *
+FROM Playlist
+WHERE Creation_Date > '2024-01-01';
+
+
+2) Get a list of all artists and the number of songs that they have sung:
+SQL Statement:: 
+SELECT artist_name, COUNT(*) AS song_count
+FROM Songs
+GROUP BY artist_name;
+
+
+3) List all active subscriptions (where End_Date is after the '2024-01-01'):
+SQL Statement::
+SELECT *
+FROM Subscription s
+INNER JOIN Under u ON s.Subscription_Id = u.Subscription_Id
+WHERE u.End_Date > '2024-01-01';
+
+
+4) List all playlists that are collaborative and have more than 2 editors (including the creator):
+SQL Statement::
+SELECT p.Playlist_Name
+FROM Playlist p
+INNER JOIN Modification_Access ma ON p.Playlist_Id = ma.Playlist_Id
+WHERE p.Is_Collaborative = TRUE
+GROUP BY p.Playlist_Id
+HAVING COUNT(DISTINCT ma.User_Id) > 2;
+
+
+5) give all the list of audio books that has language='hindi' and  that have been sent at least once.
+SQL Statement::
+SELECT *
+FROM audiobooks AS a
+JOIN audiobook_interaction AS ai ON a.audiobook_id = ai.audiobook_id
+WHERE language = 'Hindi' AND share_Count > 1;
+
+
+6) list all the account ids that have taken subscription type = 'premium' and year between 2024 and 2025
+SQL Statement::
+SELECT DISTINCT account_id
+JOIN subscriptions AS s JOIN under AS u ON u.user_id = s.user_id;
+WHERE type = 'premium'
+AND start_date BETWEEN '2024-01-01' AND '2025-12-31';
+
+
+7) Retrieve a list of accounts with their creation date and who had taken subscription.
+SQL Statement::
+SELECT a.account_id, a.creation_date, s.subscription_type, s.subscription_date
+FROM accounts AS a
+INNER JOIN subscriptions AS s ON a.account_id = s.account_id;
+
+
+8) give the names of all users who have liked songs by a specific artist.
+SQL Statement::
+SELECT DISTINCT u.user_name
+FROM usrs AS u
+JOIN likes AS l ON u.user_id = l.user_id
+JOIN songs AS s ON l.song_id = s.song_id
+JOIN artists AS a ON s.artist_id = a.artist_id
+WHERE a.artist_name = 'Arijit sinh';
+
+
+9) Retrieve the names of all users who have rated podcasts with a rating higher than 4 in a English.
+SQL Statement::
+SELECT DISTINCT u.Name
+FROM Usr u
+INNER JOIN Podcast_Rating pr ON u.User_Id = pr.User_Id
+INNER JOIN Podcast p ON pr.Podcast_Id = p.Podcast_Id
+WHERE p.Language = 'English'
+AND pr.User_rating > 4;
+
+
+10) Retrieve the names of all users who have interacted with artists from a specific country.
+SQL Statement::
+SELECT DISTINCT u.Name
+FROM Usr u
+INNER JOIN Artist_Interaction ai ON u.User_Id = ai.User_Id
+INNER JOIN Artist a ON ai.Artist_Id = a.Artist_Id
+WHERE a.Country = 'INDIA';
+
+
+11) Retrieve the names of all users who have commented on audiobooks with more than 100 characters.
+SQL Statement::
+SELECT DISTINCT u.Name
+FROM Usr u
+INNER JOIN AudioBook_Comment ac ON u.User_Id = ac.User_Id
+WHERE LENGTH(ac.User_Comment) > 100;
+
+
+12) Give the names of all users who have shared podcasts more than 15 times and played_count more than 5 times.
+SQL Statement::
+SELECT DISTINCT u.Name
+FROM Usr u
+INNER JOIN Podcast_Interaction pi ON u.User_Id = pi.User_Id
+WHERE pi.Share_Count > 15 AND pi.played_count>5;
+
+
+13) Retrieve the names of all podcasts with more than 10 likes.
+SQL Statement::
+SELECT Podcast_Name
+FROM Podcast
+WHERE Podcast_Id IN (
+    SELECT Podcast_Id
+    FROM Podcast_Interaction
+    WHERE Like_Status = 'Liked'
+    AND Like_Count > 10
+);
+
+
+14) List the playlist names along with the number of songs with a rating higher than 4 in each playlist.
+SQL Statement::
+SELECT p.Playlist_Name, COUNT(sr.Song_Id) AS High_Rated_Songs
+FROM Playlist p
+LEFT JOIN Contains c ON p.Playlist_Id = c.Playlist_Id
+LEFT JOIN Song_Rating sr ON c.Song_Id = sr.Song_Id
+WHERE sr.User_rating > 4
+GROUP BY p.Playlist_Id, p.Playlist_Name;
+
+
+15) Give the playlist names along with the number of Users those who has modification access.
+SQL Statement::
+SELECT p.Playlist_Name, COUNT(m.User_Id) AS Modification_Count
+FROM Playlist p
+LEFT JOIN Modification_Access m ON p.Playlist_Id = m.Playlist_Id
+GROUP BY p.Playlist_Id, p.Playlist_Name;
+
+
+16) List the playlist names along with the average user rating for each playlist.
+SQL Statement::
+SELECT p.Playlist_Name, AVG(air.User_rating) AS Avg_Rating
+FROM Playlist p
+LEFT JOIN Album_Interaction air ON p.Playlist_Id = air.Playlist_Id
+GROUP BY p.Playlist_Id, p.Playlist_Name;
+
+
+17) List the playlist names along with the number of users who have access to each playlist
+SQL Statement::
+SELECT p.Playlist_Name, COUNT(m.User_Id) AS User_Count
+FROM Playlist p
+LEFT JOIN Modification_Access m ON p.Playlist_Id = m.Playlist_Id
+GROUP BY p.Playlist_Id, p.Playlist_Name;
+
+
+18) Give the names of all artists who have released albums in a specific language.
+SQL Statement::
+SELECT DISTINCT a.Artist_Name
+FROM Artist a
+INNER JOIN Released_By rb ON a.Artist_Id = rb.Artist_Id
+INNER JOIN Album al ON rb.Album_Id = al.Album_Id
+WHERE al.Language = 'English';
+
+
+19) Retrieve the playlist names along with the total duration of songs in each playlist.
+SQL Statement::
+SELECT p.Playlist_Name, SUM(s.Duration) AS Total_Duration
+FROM Playlist p
+LEFT JOIN Contains c ON p.Playlist_Id = c.Playlist_Id
+LEFT JOIN Song s ON c.Song_Id = s.Song_Id
+GROUP BY p.Playlist_Id, p.Playlist_Name;
+
+
+20) Retrieve the names of all artists who have songs with a duration longer than 3 minutes.
+SQL Statement::
+SELECT DISTINCT a.Artist_Name
+FROM Artist a
+INNER JOIN Sung_By sb ON a.Artist_Id = sb.Artist_Id
+INNER JOIN Song s ON s.Song_ID = sb.Song_ID 
+WHERE s.Duration > '00:03:00';
+
+
+21) Retrieve the playlist names along with the number of songs from each genre in each playlist
+SQL Statement::
+SELECT p.Playlist_Name, g.Type AS Genre, COUNT(c.Song_Id) AS Song_Count
+FROM Playlist p
+LEFT JOIN Contains c ON p.Playlist_Id = c.Playlist_Id
+LEFT JOIN Song_Genre g ON c.Song_Id = g.Song_Id
+GROUP BY p.Playlist_Id, p.Playlist_Name, g.Type;
+
+
+22)  Give the distinct subscription types along with their respective amounts from the subscriptions table
+SQL Statement::
+SELECT s.Type, s.Amount
+FROM Subscription s;
+
+
+23) Find the total amount of revenue generated from payments in a specific year.
+SQL Statement::
+SELECT 
+    SUM(Amount) AS Total_Revenue
+FROM 
+    Payment
+WHERE 
+    EXTRACT(YEAR FROM Date) >= 2023;
+
+
+24) Give the favorite songs of a specific user in the Sonicsphere Audio Streaming schema.
+SQL Statement::
+SELECT s.Song_Name
+FROM Usr u
+INNER JOIN Song_Interaction si ON u.User_Id = si.User_Id
+INNER JOIN Song s ON si.Song_Id = s.Song_Id
+WHERE si.User_Id ='1023'  AND si.Is_Favourite = TRUE;
+
+
+25) Finds all users who have created at least 1 playlists in the Sonicsphere schema.
+SQL Statement::
+SELECT Name
+FROM Usr u
+INNER JOIN (SELECT Creator_Id, COUNT(*) Playlist_Count 
+FROM Playlist GROUP BY Creator_Id 
+HAVING count(*) >= 0) AS p ON u.User_Id = p.Creator_Id;
+
+
+26) Which subscription type has the maximum amount of money achieved till now.
+SQL Statement::
+SELECT s.Type FROM Subscription s 
+JOIN Payment p ON s.Subscription_Id = p.Subscription_Id 
+GROUP BY s.Type 
+ORDER BY SUM(p.Amount) DESC LIMIT 1;
+  
+
+27) list all the playlists that has at least 5 songs of the artist_name=“Mohammad qafir”.
+SQL Statement::
+SELECT DISTINCT pl.Playlist_Id, pl.Playlist_Name 
+FROM Playlist pl JOIN Contains c ON pl.Playlist_Id = c.Playlist_Id 
+JOIN Song s ON c.Song_Id = s.Song_Id 
+JOIN Sung_By as sb ON s.Song_Id = sb.Song_Id JOIN Artist a ON sb.Artist_Id = a.Artist_Id 
+WHERE a.Artist_Name = 'Mohammad qafir' 
+GROUP BY pl.Playlist_Id, pl.Playlist_Name 
+HAVING COUNT(s.Song_Id) >= 5;
+
+
+28) Name all the users from pincode=361234 who has given average rating >=3 in all the songs in which he gave rating.
+SQL Statement::
+SELECT u.Name
+FROM Usr as u
+JOIN Song_Rating as sr ON u.User_Id = sr.User_Id
+JOIN Song as s ON sr.Song_Id = s.Song_Id
+JOIN Usr as u2 ON s.Parent_Id = u2.User_Id
+WHERE u.Pincode = 361234
+GROUP BY u.User_Id, u.Name
+HAVING AVG(sr.User_rating) >= 3;
+
+
+29) Name the audiobooks which has all its artists from the country='India'.
+SQL Statement::
+SELECT DISTINCT ab.Title
+FROM AudioBook as ab
+LEFT JOIN Narrated_By as nb ON ab.AudioBook_Id = nb.AudioBook_Id
+LEFT JOIN Artist as a ON nb.Artist_Id = a.Artist_Id AND a.Country != 'India'
+WHERE a.Artist_Id IS NULL;
+
+
+30) Give the list of users that have done transactions more than 5 times.
+SQL Statement::
+SELECT u.User_Id, u.Name
+FROM Usr as u
+JOIN Payment as p ON u.User_Id = p.Payer_Id
+GROUP BY u.User_Id, u.Name
+HAVING COUNT(*) > 5;
+
+
+31)  give me names of all the songs of all the artists who have following more than 2.
+SQL Statement::
+SELECT DISTINCT s.Song_Name
+FROM Song  as s
+JOIN Sung_By as sb ON s.Song_Id = sb.Song_Id
+JOIN Artist as a ON sb.Artist_Id = a.Artist_Id
+JOIN Artist_interaction as ai ON a.Artist_Id = ai.Artist_Id
+WHERE ai.Artist_Id > 2;
+
+
+32) name the podcasts that have play count more than 5 from a pincode=345784.
+SQL Statement::
+SELECT DISTINCT p.Podcast_Name
+FROM Podcast as p
+JOIN Podcast_Interaction as pi ON p.Podcast_Id = pi.Podcast_Id
+JOIN Usr  as u ON pi.User_Id = u.User_Id
+WHERE u.Pincode = 345784
+AND pi.Play_Count > 5;
+
+
+33) Name all the ads of duration 2 minutes or more and were seen in songs between the years 2023 and 2024 (included). ﻿
+SQL Statement::
+SELECT DISTINCT a.Title
+FROM Ads as a
+JOIN Ads_in_Song as ais ON a.Ad_Id = ais.Ad_Id
+WHERE a.Duration >= INTERVAL '2 min'
+AND (
+    EXTRACT(YEAR FROM ais.Start_Date) BETWEEN 2023 AND 2024
+    AND EXTRACT(YEAR FROM ais.End_Date) BETWEEN 2023 AND 2024
+    );
+
+
+34) name all the accounts made by users for pincode=457325 have subscription_type=type.
+SQL Statement::
+SELECT DISTINCT a.Account_Id
+FROM Account as a
+JOIN Usr as u ON a.Creator_Id = u.User_Id
+JOIN Under s ON a.Account_Id = s.Account_Id
+JOIN Subscription ss ON ss.Subscription_ID = s.Subscription_ID 
+WHERE u.Pincode = 457325
+AND ss.Type = 'premium';
+
+
+35) list all the artist ids that have published audiobooks more than 10 in language='gujarati'.
+SQL Statement::
+SELECT nb.Artist_Id
+FROM Narrated_By as nb
+JOIN AudioBook as ab ON nb.AudioBook_Id = ab.AudioBook_Id
+WHERE ab.Language = 'Gujarati'
+GROUP BY nb.Artist_Id
+HAVING COUNT(DISTINCT ab.AudioBook_Id) > 10;
+
+
+36) list all the podcast_ids have genre = 'romance'.
+SQL Statement::
+SELECT DISTINCT pg.Podcast_Id
+FROM Podcast_Genre as pg
+JOIN Podcast as p ON pg.Podcast_Id = p.Podcast_Id
+WHERE pg.Type = 'romance';
+
+
+37) Get recommended 3 podcasts on user preferred genres for a particular user sorted by release . ( IMPORTANT ) 
+SQL Statement::
+SELECT p.Podcast_Id,p.Podcast_Name
+FROM Podcast as p
+INNER JOIN Podcast_Genre pg ON p.Podcast_Id = pg.Podcast_Id
+INNER JOIN Genre_Pref gp ON pg.Type = gp.Type
+WHERE gp.User_Id = 1022 
+ORDER BY p.Release_Date DESC
+LIMIT 3;
+
+
+38) Retrieve User's Favorite Songs with artists' names which genre is from prefered genres by user . ( IMPORTANT ) 
+SQL Statement::
+SELECT s.Song_Name, a.Artist_Name 
+FROM Song s
+INNER JOIN Sung_By sb ON sb.Song_Id = s.Song_Id
+INNER JOIN Artist a ON a.Artist_Id = sb.Artist_Id
+INNER JOIN Song_Genre sg ON s.Song_Id = sg.Song_Id
+INNER JOIN Song_Interaction si ON s.Song_Id = si.Song_Id
+WHERE si.User_Id = 1021 AND si.Is_Favourite = true;
+
+
+39) Find the "highest rated" ( by user rating ) audiobook from the database ("same can be done for songs and podcasts"). ( IMPORTANT )
+SQL Statement::
+SELECT AB.AudioBook_Id, AB.Title AS Audiobook_Title, AVG(AR.User_rating) AS Average_Rating
+FROM AudioBook AB
+INNER JOIN AudioBook_Rating AR ON AB.AudioBook_Id = AR.AudioBook_Id
+GROUP BY AB.AudioBook_Id, AB.Title
+ORDER BY Average_Rating DESC LIMIT 1;
+
+
+40) Find the most liked song of the most followed singer/artist if same like count then sort by Song_Id ("same can be done for audiobooks and podcasts"). ( IMPORTANT )
+SELECT A.Artist_Id, A.Artist_Name, S.Song_Id, S.Song_Name,
+COUNT(AI.User_Id) AS Follower_Count
+FROM Artist A
+INNER JOIN Artist_Interaction AI ON A.Artist_Id = AI.Artist_Id
+INNER JOIN Sung_By SB ON A.Artist_Id = SB.Artist_Id
+INNER JOIN Song S ON SB.Song_Id = S.Song_Id
+INNER JOIN Song_Interaction SI ON S.Song_Id = SI.Song_Id AND AI.User_Id = SI.User_Id
+WHERE AI.Is_Following = true AND SI.Like_Status = 'LIKED'
+GROUP BY A.Artist_Id, A.Artist_Name, S.Song_Id, S.Song_Name
+ORDER BY COUNT(AI.User_Id) DESC, S.Song_Id ASC
+LIMIT 1;

@@ -1,0 +1,353 @@
+Minimal FD set and BCNF proof :
+To prove BCNF (Boyce-Codd Normal Form), we need to check that each table satisfies the following condition:
+For every functional dependency X → Y, X must be a superkey of the table.
+
+Let's check each table one by one:
+
+(1) Playlist Table :: 
+● Playlist_Id -> Last_Modify_time
+● Playlist_Id -> Is_Collaborative
+● Playlist_Id -> Access_Status
+● Playlist_Id -> Playlist_Name
+● Playlist_Id -> Creation_Date
+● Playlist_Id -> Creator_Id
+
+So Now , {Playlist_Id}+ = {Playlist_Id,Last_Modify_time,Is_Collaborative,Access_Status,Playlist_Name,Creator_Id,Creation_Date}
+Therefore Key = Playlist_Id 
+Hence it is in BCNF Normal Form .
+
+(2) Account Table ::
+● Account_Id -> Account_Status
+● Account_Id -> Password
+● Account_Id -> Creator_Id
+● Account_Id -> Registration_Date
+
+So Now , {Account_Id}}+ = {Account_Id,Account_Status,Password,Creator_Id,Registration_Date}
+Therefore Key = Account_Id 
+Hence it is in BCNF Normal Form .
+
+(3) Usr Table :: 
+● User_Id -> Pincode
+● User_Id -> Address
+● User_Id -> DOB
+● User_Id -> Email
+● User_Id -> Gender
+● User_Id -> Name
+
+So Now , {User_Id}+ = {User_Id,Pincode,Address,DOB,Email,Gender,Name}
+Therefore Key = User_Id 
+Hence it is in BCNF Normal Form .
+
+(4) Subscription Table :: 
+● Subscription_Id -> Amount
+● Subscription_Id -> Type
+● Subscription_Id -> Time_period
+
+So Now , {Subscription_Id}+ = {Subscription_Id,Amount,Type,Time_Period}
+Therefore Key = Subscription_Id 
+Hence it is in BCNF Normal Form .
+
+(5) Payment Table :: 
+● Transaction_Id -> Method
+● Transaction_Id -> Date
+● Transaction_Id -> Time
+● Transaction_Id -> Payment_Status
+● Transaction_Id -> Amount
+● Transaction_Id -> Payer_Id
+● Transaction_Id -> Subscription_Id
+
+So Now , {Transaction_Id}+ = {Transaction_Id,Method,Date,Time,Payment_Status,Amount,Subscription_Id,Payer_Id}
+Therefore Key = Transaction_Id 
+Hence it is in BCNF Normal Form .
+
+(6) Album Table :: 
+● Album_Id -> Title
+● Album_Id -> Duration
+● Album_Id -> Release_Date
+
+So Now , {Album_Id}+ = {Album_Id,Title,Duration,Release_Date}
+Therefore Key = Album_Id 
+Hence it is in BCNF Normal Form .
+
+(7) AudioBook Table :: 
+● AudioBook_Id -> Language
+● AudioBook_Id -> Title
+● AudioBook_Id -> Duration 
+● AudioBook_Id -> Author_Name
+● AudioBook_Id -> Release_Date
+● AudioBook_Id -> Chapter_No
+● AudioBook_Id -> Parent_ID
+
+So Now , {AudioBook_Id}+ = {AudioBook_Id,Language,Title,Duration,Author_Name,Release_Date,Chapter_No,Parent_ID}
+Therefore Key = AudioBook_Id
+Hence it is in BCNF Normal Form .
+
+(8) Song Table :: 
+● Song_Id -> Duration
+● Song_Id -> Language
+● Song_Id -> Song_Name
+● Song_Id -> Release_Date
+● Song_Id -> Album_Id
+● Song_Id -> Version_No
+● Song_Id -> Parent_Id
+
+So Now , {Song_ID}+ = {Song_Id,Duration,Language,Song_Name,Release_Date,Album_Id,Version_No,Parent_Id}
+Therefore Key = Song_Id
+Hence it is in BCNF Normal Form .
+
+(9) Podcast Table :: 
+● Podcast_Id -> Duration
+● Podcast_Id -> Language
+● Podcast_Id -> Podcast_Name
+● Podcast_Id -> Guest
+● Podcast_Id -> Release_Date
+● Podcast_Id -> Episode_No
+● Podcast_Id -> Parent_Id
+
+So Now , {Podcast_Id}+ = {Podcast_Id,Duration,Language,Podcast_Name,Guest,Release_Date,Episode_No,Parent_Id}
+Therefore Key = Podcast_Id
+Hence it is in BCNF Normal Form .
+
+(10) Artist Table :: 
+● Artist_Id -> Profession 
+● Artist_Id -> Artist_Name 
+● Artist_Id -> Country 
+
+So Now , {Artist_Id}+ = {Artist_Id,Profession,Artist_Name,Country} 
+Therefore Key = Artist_Id
+Hence it is in BCNF Normal Form .
+
+(11) Ads Table :: 
+● Ad_Id -> Title
+● Ad_Id -> Budget
+● Ad_Id -> Duration
+● Ad_Id -> Advertiser 
+
+So Now , {Ad_Id}+ = {Ad_Id,Title,Budget,Duration,Advertiser} 
+Therefore Key = Ad_Id
+Hence it is in BCNF Normal Form .
+
+(12) Audio_Genre Table :: 
+● {Audiobook_Id,Type} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(13) Song_Genre Table ::
+● {Song_Id,Type} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(14) Podcast_Genre Table ::
+● {Podcast_Id,Type} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(15) Language_Pref Table :: 
+●{User_id , Language } => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation .  Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(16) Genre_Pref Table :: 
+●{User_Id,type} =>  Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation .  Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(17) Artist_Language :: 
+●{Artist_Id,Language} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation .  Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(18) Follows Table ::
+●{User_Id,Follower_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(19) Modification_Access Table :: 
+●{User_Id ,Playlist_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation  . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(20) Used_By Table :: 
+●{Account_Id,User_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(21) Under Table :: 
+● {Subscription_Id,Account_Id} -> Start_Date 
+● {Subscription_Id,Account_Id} -> End_Date
+
+So Now {Subscription_Id,Account_Id}+ = {Subscription_Id,Account_Id,Start_Date,End_Date}
+Therefore Key is {Subscription_Id,Account_Id} 
+Hence it is in BCNF Normal Form . 
+
+(22) Ads_in_Song Table :: 
+● {Song_Id,Ad_Id} -> Start_Date 
+● {Song_Id,Ad_Id} -> End_Date
+
+So Now {Song_Id,Ad_Id}+ = {Song_Id,Ad_Id,Start_Date,End_Date}
+Therefore Key is {Song_Id,Ad_Id} 
+Hence it is in BCNF Normal Form . 
+
+(23) Ads_in_Podcast Table :: 
+● {Podcast_Id,Ad_Id} -> Start_Date 
+● {Podcast_Id,Ad_Id} -> End_Date
+
+So Now {Podcast_Id,Ad_Id}+ = {Podcast_Id,Ad_Id,Start_Date,End_Date}
+Therefore Key is {Podcast_Id,Ad_Id} 
+Hence it is in BCNF Normal Form . 
+
+(24) Ads_in_AudioBook Table :: 
+● {AudioBook_Id,Ad_Id} -> Start_Date 
+● {AudioBook_Id,Ad_Id} -> End_Date
+
+So Now {AudioBook_Id,Ad_Id}+ = {AudioBook_Id,Ad_Id,Start_Date,End_Date}
+Therefore Key is {AudioBook_Id,Ad_Id} 
+Hence it is in BCNF Normal Form .
+
+(25) Narrated_By Table :: 
+● {Artist_Id,AudioBook_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(26) Sung_By Table :: 
+● {Artist_Id,Song_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(27) Hosted_By Table :: 
+● {Artist_Id,Podcast_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(28) Released_By Table :: 
+● {Artist_Id,Album_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(29) Contains Table :: 
+● {Playlist_Id,Song_Id} => Both Combined is a Key
+
+There are only two atrributes in the relation and none of them  is functionally dependent on other. And
+there is no projected FD for this relation . Therefore both attributes together Form a candidate key, 
+hence it is in a BCNF Normal Form.
+
+(30) Album_Interaction Table :: 
+● {Album_Id,User_Id} -> User_rating
+● {Album_Id,User_Id} -> Is_Favourite
+● {Album_Id,User_Id} -> Is_Downloaded
+
+So Now , {Album_Id,User_Id}+ = {Album_Id,User_Id,User_rating,Is_Favourite,Is_Downloaded}
+Therefore Key is : {Album_Id,User_Id}
+Hence it is in BCNF Normal Form . 
+
+(31) AudioBook_Rating Table ::
+● {AudioBook_Id,User_Id} -> User_rating
+
+So Now , {AudioBook_Id,User_Id}+ = {AudioBook_Id,User_Id,User_Rating}
+Therefore Key Is : {AudioBook_Id,User_Id} 
+Hence it is in BCNF Normal Form . 
+
+(32) AudioBook_Interaction Table ::
+● {AudioBook_Id,User_Id} -> Is_Downloaded
+● {AudioBook_Id,User_Id} -> Is_Favourite
+● {AudioBook_Id,User_Id} -> Like_Status
+● {AudioBook_Id,User_Id} -> PLay_Count
+● {AudioBook_Id,User_Id} -> Share_Count
+
+So Now {AudioBook_Id,User_Id}+ = {AudioBook_Id,User_Id,Is_Downloaded,Is_Favourite,Like_Status,PLay_Count,Share_Count}
+Therefore Key is : {AudioBook_Id,User_Id}
+Hence it is in BCNF Normal Form . 
+
+(33) AudioBook_Comment Table :: 
+● {AudioBook_Id,User_Id} -> User_Comment 
+
+So Now , {AudioBook_Id,User_Id}+ = {AudioBook_Id,User_Id,User_Comment}
+Therefore Key is : {AudioBook_Id,User_Id}
+Hence it is in BCNF Normal Form . 
+
+(34) Song_Rating Table ::
+● {Song_Id,User_Id} -> User_rating
+
+So Now , {Song_Id,User_Id}+ = {Song_Id,User_Id,User_Rating}
+Therefore Key Is : {Song_Id,User_Id} 
+Hence it is in BCNF Normal Form .
+
+(35) Song_Interaction Table ::
+● {Song_Id,User_Id} -> Is_Downloaded
+● {Song_Id,User_Id} -> Is_Favourite
+● {Song_Id,User_Id} -> Like_Status
+● {Song_Id,User_Id} -> PLay_Count
+● {Song_Id,User_Id} -> Share_Count
+
+So Now {Song_Id,User_Id}+ = {Song_Id,User_Id,Is_Downloaded,Is_Favourite,Like_Status,PLay_Count,Share_Count}
+Therefore Key is : {Song_Id,User_Id}
+Hence it is in BCNF Normal Form .
+
+(36) Song_Comment Table :: 
+● {Song_Id,User_Id} -> User_Comment 
+
+So Now , {Song_Id,User_Id}+ = {Song_Id,User_Id,User_Comment}
+Therefore Key is : {Song_Id,User_Id}
+Hence it is in BCNF Normal Form .
+
+(37) Podcast_Rating Table ::
+● {Podcast_Id,User_Id} -> User_rating
+
+So Now , {Podcast_Id,User_Id}+ = {Podcast_Id,User_Id,User_Rating}
+Therefore Key Is : {Podcast_Id,User_Id} 
+Hence it is in BCNF Normal Form .
+
+(38) Podcast_Interaction Table ::
+● {Podcast_Id,User_Id} -> Is_Downloaded
+● {Podcast_Id,User_Id} -> Is_Favourite
+● {Podcast_Id,User_Id} -> Like_Status
+● {Podcast_Id,User_Id} -> PLay_Count
+● {Podcast_Id,User_Id} -> Share_Count
+
+So Now {Podcast_Id,User_Id}+ = {Podcast_Id,User_Id,Is_Downloaded,Is_Favourite,Like_Status,PLay_Count,Share_Count}
+Therefore Key is : {Podcast_Id,User_Id}
+Hence it is in BCNF Normal Form .
+
+(39) Podcast_Comment Table :: 
+● {Podcast_Id,User_Id} -> User_Comment 
+
+So Now , {Podcast_Id,User_Id}+ = {Podcast_Id,User_Id,User_Comment}
+Therefore Key is : {Podcast_Id,User_Id}
+Hence it is in BCNF Normal Form .
+
+(40) Artist_Interaction Table ::
+● {Artist_Id_Id,User_Id} -> Is_Favourite
+● {Artist_Id_Id,User_Id} -> Is_Following
+
+So Now {Artist_Id_Id,User_Id}+ = {Artist_Id_Id,User_Id,Is_Favourite,Is_Following} 
+Therefore Key is : {Artist_Id_Id,User_Id} 
+Hence it is in BCNF Normal Form .
+
+ ●●● CONCLUSION ●●●●
+ From above proof , all the tables in the database are in BCNF Normal Form . We have written the minimal FD set and closure of all the FDs .
